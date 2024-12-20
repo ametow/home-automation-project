@@ -36,6 +36,8 @@ public class HomeService {
     public Home updateById(Long id, Home home) {
         Home existsHome = homeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Home not found"));
         existsHome.setName(home.getName());
+        existsHome.setAddress(home.getAddress());
+        existsHome.setOwner(home.getOwner());
         return homeRepository.save(existsHome);
     }
 

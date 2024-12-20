@@ -35,8 +35,13 @@ public class HomeController {
 
     @PostMapping("/homes")
     public HomeResponseDto saveHome(@RequestBody @Valid CreateHomeRequestDto dto) {
-        User user = userService.getUserById(dto.getUserId());
+        Home home = convertToHome(dto);
+        homeService.save(home);
+        return HomeResponseDto.from(home);
+    }
 
+    private Home convertToHome(CreateHomeRequestDto dto) {
+        User user = userService.getUserById(dto.getUserId());
         Home home = new Home();
         home.setName(dto.getName());
         Address address = new Address();
@@ -46,15 +51,13 @@ public class HomeController {
         address.setZip(dto.getZipCode());
         home.setAddress(address);
         home.setOwner(user);
-
-        homeService.save(home);
-        UserResponseDto userResponseDto = new UserResponseDto(user.getId(), user.getUsername(), user.getPermission());
-        return new HomeResponseDto(home.getId(), home.getName(), home.getAddress(), userResponseDto);
+        return home;
     }
 
     @GetMapping("/homes/{id}")
-    public Home getHomeById(@PathVariable Long id) {
-        return homeService.getById(id);
+    public HomeResponseDto getHomeById(@PathVariable Long id) {
+        Home home = homeService.getById(id);
+        return HomeResponseDto.from(home);
     }
 
     @DeleteMapping("/homes/{id}")
@@ -63,7 +66,9 @@ public class HomeController {
     }
 
     @PutMapping("/homes/{id}")
-    public Home updateHome(@PathVariable Long id, @RequestBody @Valid Home home) {
-        return homeService.updateById(id, home);
+    public HomeResponseDto updateHome(@PathVariable Long id, @RequestBody @Valid CreateHomeRequestDto dto) {
+        Home home = convertToHome(dto);
+        Home updatedHome = homeService.updateById(id, home);
+        return HomeResponseDto.from(updatedHome);
     }
 }
