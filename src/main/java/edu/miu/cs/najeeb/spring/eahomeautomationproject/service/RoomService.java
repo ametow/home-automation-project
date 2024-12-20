@@ -17,24 +17,24 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public List<Room> getAllRooms() {
+    public List<Room> getAll() {
         return roomRepository.findAll();
     }
 
-    public Room saveRoom(Room room) {
+    public Room save(Room room) {
         return roomRepository.save(room);
     }
 
-    public Room getRoomById(Long id) {
+    public Room getById(Long id) {
         return roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room not found"));
     }
 
-    public void deleteRoom(Long id) {
+    public void delete(Long id) {
         roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room not found"));
         roomRepository.deleteById(id);
     }
 
-    public Room updateRoom(Long id, Room room) {
+    public Room update(Long id, Room room) {
         Room existingRoom = roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room not found"));
         existingRoom.setName(room.getName());
         existingRoom.setHome(room.getHome());

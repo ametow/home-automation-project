@@ -63,4 +63,16 @@ public class CreateHomeRequestDto {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "CreateHomeRequestDto{" +
+                "name='" + name + '\'' +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", userId=" + userId +
+                '}';
+    }
 }

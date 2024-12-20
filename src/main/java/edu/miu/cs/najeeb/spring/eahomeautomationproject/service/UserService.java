@@ -34,4 +34,8 @@ public class UserService {
         user.setPermission("USER");
         return userRepository.save(user);
     }
+
+    public List<User> findUsersWithActiveDevices() {
+        return userRepository.findUsersWithActiveDevices();
+    }
 }

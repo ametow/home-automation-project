@@ -26,4 +26,10 @@ public class UserController {
     public User register(@RequestBody RegisterRequestDto user) {
         return userService.saveUser(user.toUser());
     }
+
+    @GetMapping("/active-devices")
+    public List<User> getUsersWithActiveDevices() {
+        return userService.findUsersWithActiveDevices();
+    }
+
 }

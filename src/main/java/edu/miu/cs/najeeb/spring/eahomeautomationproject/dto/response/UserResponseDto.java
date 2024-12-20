@@ -25,4 +25,13 @@ public class UserResponseDto {
     public String getPermission() {
         return permission;
     }
+
+    @Override
+    public String toString() {
+        return "UserResponseDto{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", permission='" + permission + '\'' +
+                '}';
+    }
 }

@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@NamedQuery(
+        name = "User.findUsersWithActiveDevices",
+        query = "SELECT DISTINCT u FROM User u JOIN u.homes h JOIN h.rooms r JOIN r.devices d WHERE d.status = true"
+)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

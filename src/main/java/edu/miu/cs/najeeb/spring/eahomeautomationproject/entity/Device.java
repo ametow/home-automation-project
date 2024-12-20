@@ -13,10 +13,11 @@ public class Device {
 
     @Column(unique = true)
     private String name;
+    private String manufacturer;
+    private Boolean status;
 
     @Enumerated(EnumType.STRING)
     private DeviceType type;
-
     private int energyConsumptionPerHour;
 
     @ManyToOne(optional = false)
@@ -24,6 +25,10 @@ public class Device {
 
     @OneToMany(mappedBy = "device", cascade = CascadeType.PERSIST)
     private List<DeviceEvent> deviceEvents;
+
+    @Version
+    private int version; // Version field for optimistic locking
+
 
     public void addDeviceEvent(DeviceEvent deviceEvent) {
         deviceEvents.add(deviceEvent);
@@ -33,12 +38,29 @@ public class Device {
     public Device() {
     }
 
-    public Device(String name, DeviceType type, int energyConsumptionPerHour) {
+    public Device(String name, String manufacturer, Boolean status, DeviceType type, int energyConsumptionPerHour) {
         this.name = name;
+        this.manufacturer = manufacturer;
+        this.status = status;
         this.type = type;
         this.energyConsumptionPerHour = energyConsumptionPerHour;
     }
 
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
     public Long getId() {
         return id;
     }

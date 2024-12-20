@@ -45,4 +45,14 @@ public class HomeResponseDto {
     public UserResponseDto getOwner() {
         return owner;
     }
+
+    @Override
+    public String toString() {
+        return "HomeResponseDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address=" + address +
+                ", owner=" + owner +
+                '}';
+    }
 }

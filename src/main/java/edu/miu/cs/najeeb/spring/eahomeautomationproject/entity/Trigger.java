@@ -3,6 +3,7 @@ package edu.miu.cs.najeeb.spring.eahomeautomationproject.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "triggers")
 public class Trigger {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

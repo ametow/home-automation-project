@@ -11,7 +11,7 @@ public class Room {
     private Long id;
     private String name;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Home home;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST)
