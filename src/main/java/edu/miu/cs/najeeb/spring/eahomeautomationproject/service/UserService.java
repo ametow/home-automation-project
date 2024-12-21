@@ -31,7 +31,8 @@ public class UserService {
             throw new IllegalArgumentException("User already exists");
         });
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setPermission("USER");
+        if (user.getPermission() == null)
+            user.setPermission("USER");
         return userRepository.save(user);
     }
 

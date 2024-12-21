@@ -2,7 +2,7 @@ package edu.miu.cs.najeeb.spring.eahomeautomationproject.dto.request;
 
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.User;
 
-public record RegisterRequestDto(String username, String password) {
+public record RegisterRequestDto(String username, String password, String permission) {
 
     public RegisterRequestDto {
         if (username == null || username.isBlank() || password == null || password.isBlank()) {
@@ -11,6 +11,6 @@ public record RegisterRequestDto(String username, String password) {
     }
 
     public User toUser() {
-        return new User(username, password);
+        return new User(username, password, permission);
     }
 }
