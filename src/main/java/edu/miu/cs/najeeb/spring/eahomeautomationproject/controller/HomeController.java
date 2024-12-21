@@ -6,9 +6,13 @@ import edu.miu.cs.najeeb.spring.eahomeautomationproject.dto.response.UserRespons
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.Address;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.Home;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.User;
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.security.UserPrinciple;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.service.HomeService;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +32,12 @@ public class HomeController {
     }
 
     @GetMapping("/homes")
+    @PreAuthorize("hasRole('USER')")
     public List<HomeResponseDto> getHomes() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        System.out.println("authentication: " + authentication.getAuthorities());
         List<Home> homes = homeService.getAll();
         return HomeResponseDto.from(homes);
     }

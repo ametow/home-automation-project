@@ -1,26 +1,30 @@
 package edu.miu.cs.najeeb.spring.eahomeautomationproject.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.dto.request.SendNotificationDto;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.Notification;
-import edu.miu.cs.najeeb.spring.eahomeautomationproject.repository.NotificationRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.service.DeviceService;
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.service.NotificationService;
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/notifications")
+@Validated
 public class NotificationController {
-    private final NotificationRepository notificationRepository;
+    private final NotificationService notificationService;
 
-    public NotificationController(NotificationRepository notificationRepository) {
-        this.notificationRepository = notificationRepository;
+    public NotificationController(NotificationService notificationService, UserService userService, DeviceService deviceService) {
+        this.notificationService = notificationService;
     }
 
-    @GetMapping("/user-device")
-    public List<Notification> getNotificationsByUserAndDeviceState(
-            @RequestParam Long userId,
-            @RequestParam String deviceState) {
-        return notificationRepository.findNotificationsByUserAndDeviceState(userId, deviceState);}
+    @PostMapping("/user-device")
+    public String getNotificationsByUserAndDeviceState(@RequestBody @Valid SendNotificationDto sendNotificationDto) throws JsonProcessingException {
+        notificationService.sendDeviceInfoToUser(sendNotificationDto);
+        return "Sent";
+    }
 }

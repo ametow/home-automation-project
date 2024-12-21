@@ -1,5 +1,9 @@
 package edu.miu.cs.najeeb.spring.eahomeautomationproject.dto.response;
 
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.User;
+
+import java.util.List;
+
 public class UserResponseDto {
     private Long id;
     private String username;
@@ -12,6 +16,16 @@ public class UserResponseDto {
     }
 
     public UserResponseDto() {
+    }
+
+    public static List<UserResponseDto> from(List<User> user) {
+        return user.stream().map(u -> {
+            UserResponseDto dto = new UserResponseDto();
+            dto.id = u.getId();
+            dto.username = u.getUsername();
+            dto.permission = u.getPermission();
+            return dto;
+        }).toList();
     }
 
     public Long getId() {

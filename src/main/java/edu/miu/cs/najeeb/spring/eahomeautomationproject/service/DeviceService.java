@@ -1,10 +1,11 @@
 package edu.miu.cs.najeeb.spring.eahomeautomationproject.service;
 
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.Device;
-import edu.miu.cs.najeeb.spring.eahomeautomationproject.repository.DeviceRepository;
-import edu.miu.cs.najeeb.spring.eahomeautomationproject.repository.DeviceRepositoryCustomImpl;
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.DeviceEvent;
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.OptimisticLockException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +15,17 @@ import java.util.List;
 public class DeviceService {
     private final DeviceRepositoryCustomImpl deviceRepositoryCustom;
     private final DeviceRepository deviceRepository;
+    private final TriggerRepository triggerRepository;
+    private final ActionRepository actionRepository;
+    private final DeviceEventRepository deviceEventRepository;
 
-    public DeviceService(DeviceRepositoryCustomImpl deviceRepositoryCustom, DeviceRepository deviceRepository) {
+
+    public DeviceService(DeviceRepositoryCustomImpl deviceRepositoryCustom, DeviceRepository deviceRepository, TriggerRepository triggerRepository, ActionRepository actionRepository, DeviceEventRepository deviceEventRepository) {
         this.deviceRepositoryCustom = deviceRepositoryCustom;
         this.deviceRepository = deviceRepository;
+        this.triggerRepository = triggerRepository;
+        this.actionRepository = actionRepository;
+        this.deviceEventRepository = deviceEventRepository;
     }
 
     public List<Device> findDevicesByState(String state) {
@@ -76,4 +84,12 @@ public class DeviceService {
         return deviceRepository.save(device);
     }
 
+    public DeviceEvent createDeviceEvent(Long deviceId, Long triggerId, Long actionId) {
+        DeviceEvent deviceEvent = new DeviceEvent();
+        deviceEvent.setDevice(deviceRepository.findById(deviceId).orElseThrow(() -> new EntityNotFoundException("Device not found")));
+        deviceEvent.setTrigger(triggerRepository.findById(triggerId).orElseThrow(() -> new EntityNotFoundException("Trigger not found")));
+        deviceEvent.setAction(actionRepository.findById(actionId).orElseThrow(() -> new EntityNotFoundException("Action not found")));
+        deviceEventRepository.save(deviceEvent);
+        return deviceEvent;
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -18,7 +19,10 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(user.getPermission().split(",")).map(SimpleGrantedAuthority::new).toList();
+        if (user.getPermission() == null) {
+            return new ArrayList<>();
+        }
+        return Arrays.stream(user.getPermission().split(",")).map(s -> new SimpleGrantedAuthority("ROLE_"+s)).toList();
     }
 
     @Override
@@ -29,5 +33,12 @@ public class UserPrinciple implements UserDetails {
     @Override
     public String getUsername() {
         return user.getUsername();
+    }
+
+    @Override
+    public String toString() {
+        return "UserPrinciple{" +
+                "user=" + user +
+                '}';
     }
 }

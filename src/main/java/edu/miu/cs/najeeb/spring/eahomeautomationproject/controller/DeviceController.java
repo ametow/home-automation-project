@@ -1,8 +1,10 @@
 package edu.miu.cs.najeeb.spring.eahomeautomationproject.controller;
 
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.dto.request.DeviceCreateDto;
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.dto.response.DeviceEventResponseDto;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.dto.response.DeviceResponseDto;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.Device;
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.DeviceEvent;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.Room;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.repository.DeviceRepository;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.repository.DeviceRepositoryCustomImpl;
@@ -89,4 +91,12 @@ public class DeviceController {
         return deviceService.lockAndModifyDevice(deviceId, newManufacturer);
     }
 
+    @PostMapping("/events")
+    public DeviceEventResponseDto createDeviceEvent(
+            @RequestParam Long deviceId,
+            @RequestParam Long triggerId,
+            @RequestParam Long actionId) {
+        DeviceEvent d = deviceService.createDeviceEvent(deviceId, triggerId, actionId);
+        return DeviceEventResponseDto.fromDeviceEvent(d);
+    }
 }

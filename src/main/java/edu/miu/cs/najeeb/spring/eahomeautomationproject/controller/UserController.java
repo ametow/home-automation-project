@@ -1,10 +1,12 @@
 package edu.miu.cs.najeeb.spring.eahomeautomationproject.controller;
 
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.dto.request.RegisterRequestDto;
+import edu.miu.cs.najeeb.spring.eahomeautomationproject.dto.response.UserResponseDto;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.entity.User;
 import edu.miu.cs.najeeb.spring.eahomeautomationproject.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +19,10 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public List<User> getUser(HttpSession session) {
-        System.out.println(session.getId());
-        return userService.getAllUsers();
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponseDto> getUser() {
+        var user = userService.getAllUsers();
+        return UserResponseDto.from(user);
     }
 
     @PostMapping("/register")
@@ -28,8 +31,9 @@ public class UserController {
     }
 
     @GetMapping("/active-devices")
-    public List<User> getUsersWithActiveDevices() {
-        return userService.findUsersWithActiveDevices();
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponseDto> getUsersWithActiveDevices() {
+        return UserResponseDto.from(userService.findUsersWithActiveDevices());
     }
 
 }

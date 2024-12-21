@@ -30,6 +30,10 @@ public class DeviceResponseDto {
         return output.stream().map(DeviceResponseDto::fromDevices).toList();
     }
 
+    public static DeviceResponseDto fromDevice(Device device) {
+        return new DeviceResponseDto(device.getId(), device.getName(), device.getManufacturer(), device.getStatus(), device.getType().toString(), device.getEnergyConsumptionPerHour());
+    }
+
     public Long getId() {
         return id;
     }

@@ -20,10 +20,10 @@ public class Device {
     private DeviceType type;
     private int energyConsumptionPerHour;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Room room;
 
-    @OneToMany(mappedBy = "device", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "device", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<DeviceEvent> deviceEvents;
 
     @Version
